@@ -1,45 +1,29 @@
-let obj = {
-    value:2,
-    next:{
-      value:3,
-      next:null
+function queueWatcher (watcher) {
+  var id = watcher.id;
+  console.log('watcherId='+ id + 'exporession=' + watcher.expression);
+  if (has[id] == null) {
+    //console.log('watcherId='+ id + 'exporession=' + watcher.expression);
+    has[id] = true;
+    if (!flushing) {
+      queue.push(watcher);
+    } else { 
+      // if already flushing, splice the watcher based on its id
+      // if already past its id, it will be run next immediately.
+      var i = queue.length - 1;
+      while (i > index && queue[i].id > watcher.id) {
+        i--;
+      }
+      queue.splice(i + 1, 0, watcher);
+    }
+    // queue the flush
+    if (!waiting) {
+      waiting = true;
+
+      if (!config.async) {
+        flushSchedulerQueue();
+        return
+      }
+      nextTick(flushSchedulerQueue);
     }
   }
-  let link1 = {
-    value:3,
-    next:{
-      value:5,
-      next:obj
-    }
-  }
-  let link2 = {
-    value:2,
-    next:obj
-  }
-  function linkLength(head){
-    let count = 0;
-    if(!head.next) return count
-    while(head){
-      head = head.next
-      count++
-    }
-    return count
-  }
-  function linkList(head1,head2){
-  const head1Length = linkLength(head1)
-  const head2Length = linkLength(head2)
-  let long = head1Length - head2Length >= 0 ? head1 :head2
-  let longLength = head1Length - head2Length >= 0 ? head1Length :head2Length
-  let short = head1Length - head2Length < 0 ? head1 : head2
-  let shortLength = head1Length - head2Length < 0 ? head1Length :head2Length
-  const distance = longLength - shortLength
-  for(let i = 0;i<distance;i++){
-    long = long.next
-  }
-  while(long&&long!=short){
-    long = long.next
-    short = short.next
-  }
-  return long ? long :false
-  }
-  console.log(linkList(link1,link2))
+}
