@@ -31,7 +31,7 @@ let tree = {
       pathN = pathN + tree.value
       arr.push(tree.value)
       console.log(arr)
-      if(pathN === k){
+      if(pathN === k && tree.left == null && tree.right == null){
         flag = true
       }
       core(tree.left)
