@@ -37,7 +37,7 @@ let tree = {
       core(tree.left)
       core(tree.right)
       if(!flag){
-        pathN = pathN - tree.value
+      pathN = pathN - tree.value
       arr.pop()
       }
     }
